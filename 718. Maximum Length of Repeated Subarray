@@ -1,0 +1,44 @@
+class Solution {
+    static int[][]dp=new int[1000][1000];
+    static int ans=0;
+    static int solve(int i,int j,int arr[],int brr[]){
+        if(i>=arr.length || j>=brr.length){
+                 return 0;
+        }
+        if(dp[i][j]!=-1){
+            return dp[i][j];
+        }
+        int best=0;
+        if(arr[i]==brr[j]){
+            best=  1 + solve(i+1,j+1,arr,brr);
+            ans=Math.max(ans,best);
+        }
+
+            int take=solve(i+1,j,arr,brr);
+            int skip=solve(i,j+1,arr,brr);
+            return dp[i][j]=best;
+        
+    }
+    static int solveUP(int arr[],int brr[]){
+        int dp[][]=new int[arr.length+1][brr.length+1];
+int max=0;
+        for(int i=1;i<dp.length;i++){
+            for(int j=1;j<dp[0].length;j++){
+
+              if(arr[i-1]==brr[j-1]){
+                dp[i][j]=1+dp[i-1][j-1];
+                max=Math.max(max,dp[i][j]);
+              }
+            }
+        }
+        return max;
+    }
+    public int findLength(int[] nums1, int[] nums2) {
+        // ans=0;
+        // for(int i=0;i<nums1.length;i++){
+        //     Arrays.fill(dp[i],-1);
+        // }
+        //  solve(0,0,nums1,nums2);
+         return solveUP(nums1,nums2);
+    }
+}
