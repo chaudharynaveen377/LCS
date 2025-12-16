@@ -1,0 +1,35 @@
+class Solution {
+    static boolean isPalindrome(String s,int i,int j){
+              while(i<j){
+                if(s.charAt(i)!=s.charAt(j)){
+                    return false;
+                }
+                i++;
+                j--;
+              }
+              return true;
+    }
+    static String [][] dp =new String[1000][1000];
+        static String solve(int i,int j,String s){
+        if(i>j ){
+            return "";
+        }
+        if(isPalindrome(s,i,j)){
+            return s.substring(i,j+1);
+        }
+        if(!dp[i][j].equals("")){
+            return dp[i][j];
+        }
+        String left=solve(i+1,j,s);
+        String right=solve(i,j-1,s);
+        return dp[i][j]=left.length()>right.length() ? left : right;
+    }
+    public String longestPalindrome(String s) {
+        for(int i=0;i<dp.length;i++){
+            for(int j=0;j<dp.length;j++){
+                dp[i][j]="";
+            }
+        }
+        return solve(0,s.length()-1,s);
+    }
+}
