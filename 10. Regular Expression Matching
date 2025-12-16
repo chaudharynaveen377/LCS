@@ -1,0 +1,75 @@
+
+// using two pointer i and  and do recusion for memorisation
+
+class Solution {
+
+    static boolean solve(String s1 ,String s2,String ans,int i,int  j){
+   
+   if(i>= s1.length || j>=s2.length){
+     if(s1.equals(ans)){
+        return true;
+    }
+    return false;
+   }
+
+   if(s1.charAt(i)==s2.charAt(j)){
+    return solve(s1,s2,ans+s1.charAt(i),i+1,j+1);
+   }
+   else{
+      if(s2.charAt(j)=='*' ){
+          boolean left= solve(s1,s2,ans+s1.charAt(i),i+1,j);
+          boolean right=solve(s1,s2,ans,i+1,j+1);
+          return left || right;
+      }
+      else if(s2.charAt(j)=='.'){
+            return solve(s1,s2,ans+s1.charAt(i),i+1,j+1);
+     
+      }
+   }
+
+
+    }
+    public boolean isMatch(String s, String p) {
+        for(int i=1;i<p.length();i++){
+           if(p.charAt(i-1)=='.' && p.charAt(i)=='*'){
+            return true;
+           }
+        }
+        return solve(s,p,"",0,0);
+    }
+}
+
+
+// simple use subsets 
+
+class Solution {
+    static boolean solve(String s,String p){
+        if(p.length()==0){
+            return s.length()==0;
+        }
+        boolean first_mached=false;
+        if(s.length()>0 && (p.charAt(0)==s.charAt(0) || p.charAt(0)=='.')){
+            first_mached=true;
+        }
+
+        if(p.length()>1 && p.charAt(1)=='*'){
+            boolean skip=solve(s,p.substring(2));
+            boolean take=first_mached && solve(s.substring(1),p);
+
+            return skip || take;
+        }
+        return first_mached && solve(s.substring(1),p.substring(1));
+    }
+    public boolean isMatch(String s, String p) {
+        return solve(s,p);
+    }
+}
+
+
+
+
+
+
+
+
+
